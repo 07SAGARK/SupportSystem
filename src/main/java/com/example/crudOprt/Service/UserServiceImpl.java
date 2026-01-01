@@ -8,12 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl{
-    @Autowired
+
     private UserRepository repository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UserRepository repository,PasswordEncoder passwordEncoder){
+        this.repository=repository;
+        this.passwordEncoder=passwordEncoder;
+    }
     public ResponseEntity<?> addUser(User user){
         if (repository.findByEmail(user.getEmail()).isPresent()){
             return ResponseEntity.badRequest().build();
