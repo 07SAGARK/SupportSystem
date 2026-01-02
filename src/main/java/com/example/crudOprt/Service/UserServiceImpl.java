@@ -7,8 +7,11 @@ import com.example.crudOprt.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class UserServiceImpl{
@@ -32,8 +35,14 @@ public class UserServiceImpl{
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     private ResponseEntity<?> login(LoginRequest request){
-
-        return null;
+        User user=repository.findByEmail(request.getUsername()).orElseThrow(()-> new UsernameNotFoundException("Invalid Username"));
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new RuntimeException("Wrong Password");
+        }
+        return ResponseEntity.ok(Map.of(
+                "message","Login Successful",
+                "email",user.getEmail()
+        ));
     }
 
 }
