@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IncidentServiceImpl {
@@ -37,9 +38,15 @@ public class IncidentServiceImpl {
         }
         return ResponseEntity.ok().body(list);
     }
-    public ResponseEntity<?> deleteIncident(int id){
-        // logic for deleting the Incident will be added as it needs to be deleted based on the status.
-        return null;
+    public ResponseEntity<?> deleteIncident(Long id){
+        // If the status is CANCELLED the Incident will be deleted, the filter for this is applied in the Controller
+        Optional<Incident> incident=repository.findById(id);
+        if (incident.isEmpty()){
+            return ResponseEntity.badRequest().body("No such Incident exist");
+        }
+        repository.deleteById(id);
+
+        return ResponseEntity.ok().build();
     }
 
 }
