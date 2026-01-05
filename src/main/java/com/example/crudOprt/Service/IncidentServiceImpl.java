@@ -19,6 +19,7 @@ public class IncidentServiceImpl {
     public IncidentServiceImpl(IncidentRepository repository){
         this.repository=repository;
     }
+
     public ResponseEntity<?> createIncident(Incident incident){
         if (incident==null){
             return ResponseEntity.badRequest().build();
@@ -27,7 +28,7 @@ public class IncidentServiceImpl {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<?> updateIncident(int id, Incident incident){
+    public ResponseEntity<?> updateIncident(long id, Incident incident){
         // logic for updating the incident will be added after some time
         return null;
     }
