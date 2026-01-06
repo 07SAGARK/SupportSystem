@@ -29,6 +29,10 @@ public class IncidentController {
         }
         return service.updateIncident(id,incident);
     }
+    @GetMapping("/get")
+    public ResponseEntity<?> getIncident(){
+        return service.getIncident();
+    }
 
 
 

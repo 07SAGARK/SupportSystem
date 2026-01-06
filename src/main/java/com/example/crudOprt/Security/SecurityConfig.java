@@ -19,6 +19,8 @@ public class SecurityConfig  {
         http.csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers("/agent/**").permitAll()
+                        .requestMatchers("/create").hasRole("CLIENT")
+                        .requestMatchers("/get").hasRole("ADMIN")
                         .anyRequest().authenticated());
         return http.build();
     }

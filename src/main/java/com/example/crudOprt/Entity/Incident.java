@@ -19,8 +19,9 @@ public class Incident {
     private long id;
 
     private String description;
-
+    private String caller;
     private String assignmentGroup;
+    private String assignedTo;
 
     @Enumerated(EnumType.STRING)
     private IncidentStatus State;
