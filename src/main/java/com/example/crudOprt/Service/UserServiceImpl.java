@@ -34,7 +34,7 @@ public class UserServiceImpl{
         repository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    private ResponseEntity<?> login(LoginRequest request){
+    public ResponseEntity<?> login(LoginRequest request){
         User user=repository.findByEmail(request.getUsername()).orElseThrow(()-> new UsernameNotFoundException("Invalid Username"));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new RuntimeException("Wrong Password");
