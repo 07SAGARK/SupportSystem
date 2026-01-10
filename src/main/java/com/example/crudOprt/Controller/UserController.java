@@ -23,6 +23,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
-        return null;
+        return service.login(request);
     }
 }
