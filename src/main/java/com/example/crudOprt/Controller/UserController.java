@@ -1,10 +1,9 @@
 package com.example.crudOprt.Controller;
 
-import com.example.crudOprt.Entity.User;
+import com.example.crudOprt.Entity.ProjectUser;
 import com.example.crudOprt.Service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +16,8 @@ public class UserController {
     private UserServiceImpl service;
 
     @PostMapping("/register")
-    public ResponseEntity<?> addUser(@RequestBody User user){
-       return service.addUser(user);
+    public ResponseEntity<?> addUser(@RequestBody ProjectUser projectUser){
+       return service.addUser(projectUser);
     }
 
     @PostMapping("/login")
