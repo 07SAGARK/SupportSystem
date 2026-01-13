@@ -4,6 +4,9 @@ import com.example.crudOprt.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig  {
 
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     @Autowired
     public SecurityConfig(CustomUserDetailsService userDetailsService){
         this.customUserDetailsService=userDetailsService;
@@ -23,13 +26,23 @@ public class SecurityConfig  {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/agent/**").permitAll()
-                        .requestMatchers("/create").hasAnyRole("CLIENT","AGENT")
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/agent/login", "/agent/register").permitAll()
+                        .requestMatchers("/incident/create").hasAnyRole("CLIENT", "AGENT")
                         .requestMatchers("/get").hasRole("ADMIN")
-                        .anyRequest().authenticated()).userDetailsService(customUserDetailsService);
+                        .anyRequest().authenticated()
+                )
+                .userDetailsService(customUserDetailsService)
+                .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 }

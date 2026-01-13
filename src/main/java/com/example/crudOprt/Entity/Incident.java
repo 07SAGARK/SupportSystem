@@ -24,9 +24,9 @@ public class Incident {
     private String assignedTo;
 
     @Enumerated(EnumType.STRING)
-    private IncidentStatus State;
+    private IncidentStatus state;
 
-    private int Priority;
+    private int priority;
 
 
 }
