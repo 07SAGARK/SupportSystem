@@ -4,6 +4,7 @@ import com.example.crudOprt.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -37,7 +38,8 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/agent/login", "/agent/register").permitAll()
                         .requestMatchers("/incident/create").hasAnyRole("CLIENT", "AGENT")
-                        .requestMatchers("/get").hasRole("ADMIN")
+                        .requestMatchers("/get").hasAnyRole("ADMIN","AGENT")
+                        .requestMatchers(HttpMethod.PUT,"/incident/update/**").hasAnyRole("CLIENT", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(customUserDetailsService)
