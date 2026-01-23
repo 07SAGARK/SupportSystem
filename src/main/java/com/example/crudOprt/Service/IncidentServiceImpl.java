@@ -1,6 +1,7 @@
 package com.example.crudOprt.Service;
 
 import com.example.crudOprt.Entity.Incident;
+import com.example.crudOprt.Enums.IncidentStatus;
 import com.example.crudOprt.Repository.IncidentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,19 @@ public class IncidentServiceImpl {
     }
 
     public ResponseEntity<?> updateIncident(long id, Incident incident){
-        // logic for updating the incident will be added after some time
-        return null;
+        // logic for updating the incident has been added
+        Optional<Incident>  incdnt=repository.findById(id);
+        if (incdnt==null){
+            return ResponseEntity.badRequest().body("No Such Incident Exist");
+        }
+        Incident inc=incdnt.get();
+        inc.setAssignedTo(incident.getAssignedTo());
+        inc.setState(incident.getState());
+        inc.setPriority(incident.getPriority());
+        inc.setAssignmentGroup(incident.getAssignmentGroup());
+        inc.setDescription(incident.getDescription());
+        repository.save(inc);
+        return ResponseEntity.ok("Incident Updated");
     }
     public ResponseEntity<?> getIncident(){
         List<Incident> list=repository.findAll();
