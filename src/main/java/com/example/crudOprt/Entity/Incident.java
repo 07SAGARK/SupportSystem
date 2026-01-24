@@ -28,5 +28,7 @@ public class Incident {
 
     private int priority;
 
+    private String resolutionNote;
+
 
 }
