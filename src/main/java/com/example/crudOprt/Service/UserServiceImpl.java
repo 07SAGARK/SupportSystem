@@ -13,20 +13,20 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl {
 
     private UserRepository repository;
-    private PasswordEncoder passwordEncoder;
+//    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository repository,PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository repository) {
         this.repository=repository;
-        this.passwordEncoder=passwordEncoder;
+//        this.passwordEncoder=passwordEncoder;
 
     }
     public ResponseEntity<?> addUser(ProjectUser projectUser){
         if (repository.findByEmail(projectUser.getEmail()).isPresent()){
             return ResponseEntity.badRequest().build();
         }
-        projectUser.setPassword(passwordEncoder.encode(projectUser.getPassword()));
+//        projectUser.setPassword(passwordEncoder.encode(projectUser.getPassword()));
         projectUser.setRole(Role.AGENT);
 
         repository.save(projectUser);
