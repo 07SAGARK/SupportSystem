@@ -19,6 +19,10 @@ public class IncidentController {
         this.service=service;
     }
 
+    @GetMapping("/create")
+    public String createIncident(){
+        return "Incident/create";
+    }
     @PostMapping("/create")
     public ResponseEntity<?> createIncident(@RequestBody Incident incident){
         return service.createIncident(incident);
