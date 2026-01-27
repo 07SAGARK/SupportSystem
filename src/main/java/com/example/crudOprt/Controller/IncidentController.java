@@ -24,9 +24,11 @@ public class IncidentController {
         return "Incident/create";
     }
     @PostMapping("/create")
-    public ResponseEntity<?> createIncident(@RequestBody Incident incident){
-        return service.createIncident(incident);
+    public String createIncident(Incident incident){
+         service.createIncident(incident);
+         return "redirect:/Incident/create";
     }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateIncident(@PathVariable long id,@RequestBody Incident incident){
