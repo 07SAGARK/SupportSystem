@@ -26,7 +26,7 @@ public class IncidentController {
     @PostMapping("/create")
     public String createIncident(Incident incident){
          service.createIncident(incident);
-         return "redirect:/Incident/create";
+         return "redirect:/incident/create";
     }
 
 
