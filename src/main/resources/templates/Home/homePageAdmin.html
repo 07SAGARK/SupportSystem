@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en" class="h-full" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Support Tickets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <script src="/_sdk/data_sdk.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <style>
+    body {
+      box-sizing: border-box;
+    }
+    * {
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-slide-in {
+      animation: slideIn 0.4s ease-out forwards;
+    }
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+    }
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+    .loading-shimmer {
+      animation: shimmer 2s infinite;
+      background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+      background-size: 1000px 100%;
+    }
+    .nav-tab {
+      transition: all 0.3s ease;
+    }
+    .nav-tab:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+    <style>@view-transition { navigation: auto; }</style>
+</head>
+<body class="h-full w-full overflow-auto bg-slate-950" style="margin: 0; padding: 0;">
+<div id="app" class="min-h-full w-full"><!-- Admin Navbar -->
+    <nav class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl sticky top-0 z-50 border-b border-emerald-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-xl">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div><span id="company-name" class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">HelpDesk Pro</span>
+                        <p class="text-xs text-emerald-300/70 font-medium">Admin Control Panel</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2"><button onclick="setView('dashboard')" id="nav-dashboard" class="nav-tab px-5 py-2.5 rounded-xl text-white font-semibold bg-emerald-600/30 border border-emerald-500/50 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg> Dashboard </button> <button onclick="setView('tickets')" id="nav-tickets" class="nav-tab px-5 py-2.5 rounded-xl text-slate-300 font-semibold hover:bg-slate-800/50 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg> All Tickets </button> <button onclick="setView('teams')" id="nav-teams" class="nav-tab px-5 py-2.5 rounded-xl text-slate-300 font-semibold hover:bg-slate-800/50 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg> Teams </button>
+                </div>
+            </div>
+        </div>
+    </nav><!-- Dashboard View -->
+    <div id="dashboard-view"><!-- Header Section -->
+        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 border-b border-slate-700/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-xl">
+                        <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 id="dashboard-title" class="text-4xl font-bold text-white">Support Dashboard</h1>
+                        <p class="text-emerald-300/70 text-lg">Real-time ticket analytics and team performance</p>
+                    </div>
+                </div><!-- Stats Overview -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 shadow-xl animate-slide-in">
+                        <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Total Tickets</p>
+                        <p id="stat-total" class="text-4xl font-bold text-white">0</p>
+                    </div>
+                    <div class="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-yellow-500/30 shadow-xl animate-slide-in" style="animation-delay: 0.1s;">
+                        <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Open</p>
+                        <p id="stat-open" class="text-4xl font-bold text-yellow-400">0</p>
+                    </div>
+                    <div class="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-blue-500/30 shadow-xl animate-slide-in" style="animation-delay: 0.2s;">
+                        <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">In Progress</p>
+                        <p id="stat-progress" class="text-4xl font-bold text-blue-400">0</p>
+                    </div>
+                    <div class="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-orange-500/30 shadow-xl animate-slide-in" style="animation-delay: 0.3s;">
+                        <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Pending</p>
+                        <p id="stat-pending" class="text-4xl font-bold text-orange-400">0</p>
+                    </div>
+                    <div class="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-green-500/30 shadow-xl animate-slide-in" style="animation-delay: 0.4s;">
+                        <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Resolved</p>
+                        <p id="stat-resolved" class="text-4xl font-bold text-green-400">0</p>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Analytics Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"><!-- Priority Distribution -->
+                <div class="bg-slate-900 rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Priority Distribution</h3>
+                    </div>
+                    <div class="space-y-5">
+                        <div class="flex items-center gap-4"><span class="w-24 text-sm font-semibold text-slate-300">Critical</span>
+                            <div class="flex-1 bg-slate-800 rounded-full h-6 overflow-hidden shadow-inner">
+                                <div id="bar-critical" class="h-full bg-gradient-to-r from-red-600 to-red-500 transition-all duration-700" style="width: 0%"></div>
+                            </div><span id="count-critical" class="text-white font-bold w-10 text-right text-lg">0</span>
+                        </div>
+                        <div class="flex items-center gap-4"><span class="w-24 text-sm font-semibold text-slate-300">High</span>
+                            <div class="flex-1 bg-slate-800 rounded-full h-6 overflow-hidden shadow-inner">
+                                <div id="bar-high" class="h-full bg-gradient-to-r from-orange-600 to-orange-500 transition-all duration-700" style="width: 0%"></div>
+                            </div><span id="count-high" class="text-white font-bold w-10 text-right text-lg">0</span>
+                        </div>
+                        <div class="flex items-center gap-4"><span class="w-24 text-sm font-semibold text-slate-300">Medium</span>
+                            <div class="flex-1 bg-slate-800 rounded-full h-6 overflow-hidden shadow-inner">
+                                <div id="bar-medium" class="h-full bg-gradient-to-r from-yellow-600 to-yellow-500 transition-all duration-700" style="width: 0%"></div>
+                            </div><span id="count-medium" class="text-white font-bold w-10 text-right text-lg">0</span>
+                        </div>
+                        <div class="flex items-center gap-4"><span class="w-24 text-sm font-semibold text-slate-300">Low</span>
+                            <div class="flex-1 bg-slate-800 rounded-full h-6 overflow-hidden shadow-inner">
+                                <div id="bar-low" class="h-full bg-gradient-to-r from-green-600 to-green-500 transition-all duration-700" style="width: 0%"></div>
+                            </div><span id="count-low" class="text-white font-bold w-10 text-right text-lg">0</span>
+                        </div>
+                    </div>
+                </div><!-- Team Workload -->
+                <div class="bg-slate-900 rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Team Workload</h3>
+                    </div>
+                    <div id="team-workload" class="space-y-5"><!-- Team stats will be rendered here -->
+                    </div>
+                </div>
+            </div><!-- Recent Tickets -->
+            <div class="bg-slate-900 rounded-3xl border border-slate-700/50 shadow-2xl overflow-hidden">
+                <div class="p-8 border-b border-slate-700/50 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Recent Tickets</h3>
+                    </div><button onclick="setView('tickets')" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-2 transition-colors"> View All
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg></button>
+                </div>
+                <div id="recent-tickets" class="divide-y divide-slate-700/50"><!-- Recent tickets will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div><!-- All Tickets View -->
+    <div id="tickets-view" class="hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">All Support Tickets</h1>
+                    <p class="text-slate-400">Manage and track all customer support requests</p>
+                </div>
+                <div class="flex flex-wrap gap-3"><select id="filter-status" onchange="renderTicketsTable()" class="bg-slate-800 border border-slate-600 rounded-xl px-5 py-3 text-white font-medium shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"> <option value="all">All Status</option> <option value="Open">Open</option> <option value="In Progress">In Progress</option> <option value="Pending">Pending</option> <option value="Resolved">Resolved</option> <option value="Closed">Closed</option> </select> <select id="filter-priority" onchange="renderTicketsTable()" class="bg-slate-800 border border-slate-600 rounded-xl px-5 py-3 text-white font-medium shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"> <option value="all">All Priority</option> <option value="Critical">Critical</option> <option value="High">High</option> <option value="Medium">Medium</option> <option value="Low">Low</option> </select> <select id="filter-team" onchange="renderTicketsTable()" class="bg-slate-800 border border-slate-600 rounded-xl px-5 py-3 text-white font-medium shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"> <option value="all">All Teams</option> <option value="IT Support">IT Support</option> <option value="Network Team">Network Team</option> <option value="Application Support">Application Support</option> <option value="Security Team">Security Team</option> <option value="Database Team">Database Team</option> </select>
+                </div>
+            </div>
+            <div id="tickets-table" class="bg-slate-900 rounded-3xl border border-slate-700/50 shadow-2xl overflow-hidden"><!-- Tickets table will be rendered here -->
+            </div>
+        </div>
+    </div><!-- Teams View -->
+    <div id="teams-view" class="hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-white mb-2">Assignment Groups</h1>
+                <p class="text-slate-400">Monitor team performance and ticket distribution</p>
+            </div>
+            <div id="teams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Teams will be rendered here -->
+            </div>
+        </div>
+    </div><!-- Ticket Detail Modal -->
+    <div id="ticket-detail-modal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="hideTicketDetailModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+            <div class="bg-slate-900 rounded-3xl shadow-2xl w-full max-w-4xl relative border border-slate-700 my-8">
+                <div id="ticket-detail-content"><!-- Details will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Configuration
+    const defaultConfig = {
+      company_name: 'HelpDesk Pro',
+      dashboard_title: 'Support Dashboard',
+      primary_color: '#10b981',
+      background_color: '#020617',
+      surface_color: '#0f172a',
+      text_color: '#ffffff',
+      accent_color: '#06b6d4'
+    };
+
+    let config = { ...defaultConfig };
+    let allTickets = [];
+    let currentView = 'dashboard';
+
+    const teams = [
+      { name: 'IT Support', icon: '🖥️', description: 'General IT issues and hardware support', color: 'from-blue-500 to-cyan-500' },
+      { name: 'Network Team', icon: '🌐', description: 'Network connectivity and infrastructure', color: 'from-purple-500 to-pink-500' },
+      { name: 'Application Support', icon: '📱', description: 'Software and application issues', color: 'from-green-500 to-emerald-500' },
+      { name: 'Security Team', icon: '🔒', description: 'Security incidents and access management', color: 'from-red-500 to-orange-500' },
+      { name: 'Database Team', icon: '🗄️', description: 'Database issues and data management', color: 'from-yellow-500 to-amber-500' }
+    ];
+
+    // Data SDK Handler
+    const dataHandler = {
+      onDataChanged(data) {
+        allTickets = data;
+        updateStats();
+        updatePriorityBars();
+        updateTeamWorkload();
+        renderRecentTickets();
+        renderTicketsTable();
+        renderTeamsGrid();
+      }
+    };
+
+    // Initialize SDKs
+    async function initApp() {
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (newConfig) => {
+            config = { ...defaultConfig, ...newConfig };
+            applyConfig();
+          },
+          mapToCapabilities: (cfg) => ({
+            recolorables: [
+              {
+                get: () => cfg.primary_color || defaultConfig.primary_color,
+                set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
+              },
+              {
+                get: () => cfg.background_color || defaultConfig.background_color,
+                set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+              },
+              {
+                get: () => cfg.surface_color || defaultConfig.surface_color,
+                set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+              },
+              {
+                get: () => cfg.text_color || defaultConfig.text_color,
+                set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+              },
+              {
+                get: () => cfg.accent_color || defaultConfig.accent_color,
+                set: (v) => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
+              }
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (cfg) => new Map([
+            ['company_name', cfg.company_name || defaultConfig.company_name],
+            ['dashboard_title', cfg.dashboard_title || defaultConfig.dashboard_title]
+          ])
+        });
+      }
+
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error('Failed to initialize Data SDK');
+        }
+      }
+
+      applyConfig();
+    }
+
+    function applyConfig() {
+      document.getElementById('company-name').textContent = config.company_name || defaultConfig.company_name;
+      document.getElementById('dashboard-title').textContent = config.dashboard_title || defaultConfig.dashboard_title;
+    }
+
+    function setView(view) {
+      currentView = view;
+      document.getElementById('dashboard-view').classList.toggle('hidden', view !== 'dashboard');
+      document.getElementById('tickets-view').classList.toggle('hidden', view !== 'tickets');
+      document.getElementById('teams-view').classList.toggle('hidden', view !== 'teams');
+
+      ['dashboard', 'tickets', 'teams'].forEach(v => {
+        const btn = document.getElementById(`nav-${v}`);
+        if (v === view) {
+          btn.classList.add('bg-emerald-600/30', 'border', 'border-emerald-500/50', 'text-white');
+          btn.classList.remove('text-slate-300', 'hover:bg-slate-800/50');
+        } else {
+          btn.classList.remove('bg-emerald-600/30', 'border', 'border-emerald-500/50', 'text-white');
+          btn.classList.add('text-slate-300', 'hover:bg-slate-800/50');
+        }
+      });
+    }
+
+    function updateStats() {
+      const total = allTickets.length;
+      const open = allTickets.filter(t => t.status === 'Open').length;
+      const inProgress = allTickets.filter(t => t.status === 'In Progress').length;
+      const pending = allTickets.filter(t => t.status === 'Pending').length;
+      const resolved = allTickets.filter(t => t.status === 'Resolved' || t.status === 'Closed').length;
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-open').textContent = open;
+      document.getElementById('stat-progress').textContent = inProgress;
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-resolved').textContent = resolved;
+    }
+
+    function updatePriorityBars() {
+      const total = allTickets.length || 1;
+      ['Critical', 'High', 'Medium', 'Low'].forEach(priority => {
+        const count = allTickets.filter(t => t.priority === priority).length;
+        const percentage = (count / total) * 100;
+        const bar = document.getElementById(`bar-${priority.toLowerCase()}`);
+        const countEl = document.getElementById(`count-${priority.toLowerCase()}`);
+        if (bar) bar.style.width = `${percentage}%`;
+        if (countEl) countEl.textContent = count;
+      });
+    }
+
+    function updateTeamWorkload() {
+      const container = document.getElementById('team-workload');
+      const total = allTickets.length || 1;
+
+      container.innerHTML = teams.map(team => {
+        const count = allTickets.filter(t => t.assignment_group === team.name).length;
+        const percentage = (count / total) * 100;
+        return `
+          <div class="flex items-center gap-4">
+            <span class="text-3xl flex-shrink-0">${team.icon}</span>
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-semibold text-slate-300">${team.name}</span>
+                <span class="text-sm font-bold text-white">${count} tickets</span>
+              </div>
+              <div class="bg-slate-800 rounded-full h-3 overflow-hidden shadow-inner">
+                <div class="h-full bg-gradient-to-r ${team.color} transition-all duration-700" style="width: ${percentage}%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderRecentTickets() {
+      const container = document.getElementById('recent-tickets');
+      const recent = allTickets.slice(-8).reverse();
+
+      if (recent.length === 0) {
+        container.innerHTML = `
+          <div class="p-12 text-center">
+            <span class="text-6xl mb-4 block">📭</span>
+            <p class="text-slate-400 text-lg">No tickets available</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = recent.map(ticket => `
+        <div class="p-6 hover:bg-slate-800/50 transition-all cursor-pointer" onclick="showTicketDetail('${ticket.__backendId}')">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-5 flex-1 min-w-0">
+              <span class="px-3 py-1.5 ${getPriorityClass(ticket.priority)} text-white text-xs rounded-xl font-bold shadow-lg flex-shrink-0">${ticket.priority}</span>
+              <div class="flex-1 min-w-0">
+                <p class="text-white font-semibold text-lg mb-1 truncate">${escapeHtml(ticket.title)}</p>
+                <div class="flex items-center gap-4 text-sm text-slate-400">
+                  <span class="font-mono">#${ticket.ticket_id}</span>
+                  <span>•</span>
+                  <span>${ticket.assignment_group}</span>
+                  <span>•</span>
+                  <span>${formatDate(ticket.created_at)}</span>
+                </div>
+              </div>
+            </div>
+            <span class="px-4 py-2 ${getStatusClass(ticket.status)} rounded-xl text-sm font-bold shadow-lg flex-shrink-0">${ticket.status}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTicketsTable() {
+      const container = document.getElementById('tickets-table');
+      const filterStatus = document.getElementById('filter-status').value;
+      const filterPriority = document.getElementById('filter-priority').value;
+      const filterTeam = document.getElementById('filter-team').value;
+
+      let filtered = allTickets;
+      if (filterStatus !== 'all') filtered = filtered.filter(t => t.status === filterStatus);
+      if (filterPriority !== 'all') filtered = filtered.filter(t => t.priority === filterPriority);
+      if (filterTeam !== 'all') filtered = filtered.filter(t => t.assignment_group === filterTeam);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-16 text-center">
+            <span class="text-7xl mb-6 block">🔍</span>
+            <p class="text-slate-400 text-xl">No tickets match your filters</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-slate-800/80">
+              <tr>
+                <th class="px-6 py-5 text-left text-xs font-bold text-slate-300 uppercase tracking-wider">Ticket</th>
+                <th class="px-6 py-5 text-left text-xs font-bold text-slate-300 uppercase tracking-wider">Priority</th>
+                <th class="px-6 py-5 text-left text-xs font-bold text-slate-300 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-5 text-left text-xs font-bold text-slate-300 uppercase tracking-wider">Team</th>
+                <th class="px-6 py-5 text-left text-xs font-bold text-slate-300 uppercase tracking-wider">Created</th>
+                <th class="px-6 py-5 text-left text-xs font-bold text-slate-300 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-700/50">
+              ${filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(ticket => `
+                <tr class="hover:bg-slate-800/40 transition-colors">
+                  <td class="px-6 py-5">
+                    <div>
+                      <p class="text-white font-semibold text-base mb-1">${escapeHtml(ticket.title)}</p>
+                      <p class="text-slate-500 font-mono text-sm">#${ticket.ticket_id}</p>
+                    </div>
+                  </td>
+                  <td class="px-6 py-5">
+                    <span class="px-3 py-1.5 ${getPriorityClass(ticket.priority)} text-white text-xs rounded-xl font-bold shadow-lg inline-block">${ticket.priority}</span>
+                  </td>
+                  <td class="px-6 py-5">
+                    <select onchange="updateTicketStatus('${ticket.__backendId}', this.value)" class="bg-slate-700 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-white font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-lg">
+                      <option value="Open" ${ticket.status === 'Open' ? 'selected' : ''}>Open</option>
+                      <option value="In Progress" ${ticket.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                      <option value="Pending" ${ticket.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                      <option value="Resolved" ${ticket.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+                      <option value="Closed" ${ticket.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                    </select>
+                  </td>
+                  <td class="px-6 py-5">
+                    <span class="text-slate-300 font-medium">${ticket.assignment_group}</span>
+                  </td>
+                  <td class="px-6 py-5">
+                    <span class="text-slate-400 text-sm">${formatDate(ticket.created_at)}</span>
+                  </td>
+                  <td class="px-6 py-5">
+                    <button onclick="showTicketDetail('${ticket.__backendId}')" class="px-5 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 transition-colors shadow-lg">
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderTeamsGrid() {
+      const container = document.getElementById('teams-grid');
+
+      container.innerHTML = teams.map(team => {
+        const teamTickets = allTickets.filter(t => t.assignment_group === team.name);
+        const open = teamTickets.filter(t => t.status === 'Open').length;
+        const inProgress = teamTickets.filter(t => t.status === 'In Progress').length;
+        const resolved = teamTickets.filter(t => t.status === 'Resolved' || t.status === 'Closed').length;
+
+        return `
+          <div class="bg-slate-900 rounded-3xl p-8 border border-slate-700/50 shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 transition-all">
+            <div class="flex items-center gap-5 mb-6">
+              <div class="w-16 h-16 bg-gradient-to-br ${team.color} rounded-2xl flex items-center justify-center shadow-xl">
+                <span class="text-4xl">${team.icon}</span>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-bold text-white mb-1">${team.name}</h3>
+                <p class="text-slate-400 text-sm">${team.description}</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="bg-yellow-500/10 backdrop-blur-xl rounded-2xl p-4 text-center border border-yellow-500/20">
+                <p class="text-3xl font-bold text-yellow-400 mb-1">${open}</p>
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Open</p>
+              </div>
+              <div class="bg-blue-500/10 backdrop-blur-xl rounded-2xl p-4 text-center border border-blue-500/20">
+                <p class="text-3xl font-bold text-blue-400 mb-1">${inProgress}</p>
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Progress</p>
+              </div>
+              <div class="bg-green-500/10 backdrop-blur-xl rounded-2xl p-4 text-center border border-green-500/20">
+                <p class="text-3xl font-bold text-green-400 mb-1">${resolved}</p>
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Resolved</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function updateTicketStatus(backendId, newStatus) {
+      const ticket = allTickets.find(t => t.__backendId === backendId);
+      if (!ticket) return;
+
+      const updatedTicket = {
+        ...ticket,
+        status: newStatus,
+        updated_at: new Date().toISOString()
+      };
+
+      const result = await window.dataSdk.update(updatedTicket);
+      if (result.isOk) {
+        showToast('Status updated successfully!', 'success');
+      } else {
+        showToast('Failed to update status', 'error');
+      }
+    }
+
+    function showTicketDetail(backendId) {
+      const ticket = allTickets.find(t => t.__backendId === backendId);
+      if (!ticket) return;
+
+      const content = document.getElementById('ticket-detail-content');
+      content.innerHTML = `
+        <div class="p-8 border-b border-slate-700/50">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-5">
+              <div class="w-20 h-20 ${getPriorityClass(ticket.priority)} rounded-2xl flex items-center justify-center shadow-xl">
+                <span class="text-4xl">${getPriorityEmoji(ticket.priority)}</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="text-slate-500 font-mono">#${ticket.ticket_id}</span>
+                  <span class="px-3 py-1 ${getPriorityClass(ticket.priority)} text-white text-xs rounded-lg font-bold">${ticket.priority}</span>
+                </div>
+                <h2 class="text-3xl font-bold text-white">${escapeHtml(ticket.title)}</h2>
+              </div>
+            </div>
+            <button onclick="hideTicketDetailModal()" class="text-slate-400 hover:text-white transition-colors">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="p-8 space-y-8">
+          <div>
+            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Description</h3>
+            <p class="text-white text-lg bg-slate-800/50 rounded-2xl p-6 leading-relaxed">${escapeHtml(ticket.description)}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="bg-slate-800/50 rounded-2xl p-6">
+              <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-3">Status</p>
+              <select id="detail-status" class="w-full bg-slate-700 border border-slate-600 rounded-xl px-4 py-3 text-white font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <option value="Open" ${ticket.status === 'Open' ? 'selected' : ''}>Open</option>
+                <option value="In Progress" ${ticket.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                <option value="Pending" ${ticket.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="Resolved" ${ticket.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
+                <option value="Closed" ${ticket.status === 'Closed' ? 'selected' : ''}>Closed</option>
+              </select>
+            </div>
+            <div class="bg-slate-800/50 rounded-2xl p-6">
+              <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-3">Category</p>
+              <p class="text-white text-xl font-bold">${ticket.category}</p>
+            </div>
+            <div class="bg-slate-800/50 rounded-2xl p-6">
+              <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-3">Assignment Group</p>
+              <p class="text-white text-xl font-bold">${ticket.assignment_group}</p>
+            </div>
+            <div class="bg-slate-800/50 rounded-2xl p-6">
+              <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-3">Created</p>
+              <p class="text-white text-xl font-bold">${formatDate(ticket.created_at)}</p>
+            </div>
+          </div>
+          <div class="flex gap-4 pt-6 border-t border-slate-700/50">
+            <button onclick="hideTicketDetailModal()" class="flex-1 px-6 py-4 bg-slate-700 text-white font-semibold rounded-xl hover:bg-slate-600 transition-colors text-lg">
+              Close
+            </button>
+            <button onclick="updateTicketFromDetail('${ticket.__backendId}')" class="flex-1 px-6 py-4 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white font-semibold rounded-xl hover:from-emerald-700 hover:to-cyan-700 transition-all shadow-lg text-lg">
+              Update Status
+            </button>
+          </div>
+        </div>
+      `;
+      document.getElementById('ticket-detail-modal').classList.remove('hidden');
+    }
+
+    function hideTicketDetailModal() {
+      document.getElementById('ticket-detail-modal').classList.add('hidden');
+    }
+
+    async function updateTicketFromDetail(backendId) {
+      const newStatus = document.getElementById('detail-status').value;
+      await updateTicketStatus(backendId, newStatus);
+      hideTicketDetailModal();
+    }
+
+    function getPriorityClass(priority) {
+      const classes = {
+        'Critical': 'bg-gradient-to-r from-red-600 to-red-700',
+        'High': 'bg-gradient-to-r from-orange-600 to-orange-700',
+        'Medium': 'bg-gradient-to-r from-yellow-600 to-yellow-700',
+        'Low': 'bg-gradient-to-r from-green-600 to-green-700'
+      };
+      return classes[priority] || 'bg-slate-600';
+    }
+
+    function getPriorityEmoji(priority) {
+      const emojis = {
+        'Critical': '🔴',
+        'High': '🟠',
+        'Medium': '🟡',
+        'Low': '🟢'
+      };
+      return emojis[priority] || '⚪';
+    }
+
+    function getStatusClass(status) {
+      const classes = {
+        'Open': 'bg-yellow-500/20 text-yellow-400',
+        'In Progress': 'bg-blue-500/20 text-blue-400',
+        'Pending': 'bg-orange-500/20 text-orange-400',
+        'Resolved': 'bg-green-500/20 text-green-400',
+        'Closed': 'bg-slate-500/20 text-slate-400'
+      };
+      return classes[status] || 'bg-slate-500/20 text-slate-400';
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return 'N/A';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function showToast(message, type) {
+      const toast = document.createElement('div');
+      const bgClass = type === 'success' ? 'from-green-600 to-emerald-600' : 'from-red-600 to-rose-600';
+      toast.className = `fixed bottom-8 right-8 px-8 py-4 bg-gradient-to-r ${bgClass} text-white font-bold rounded-2xl shadow-2xl z-50 animate-slide-in`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    initApp();
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c6979a4c74f8513',t:'MTc2OTg2NTI5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
