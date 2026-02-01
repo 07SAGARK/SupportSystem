@@ -280,7 +280,7 @@
           </div>
         </div>
         <!-- Incident Form -->
-        <form id="incident-form">
+        <form id="incident-form" method="post" action="/incident/create">
           <div class="space-y-8">
             <!-- Caller Field -->
             <div>
@@ -347,7 +347,6 @@
               <!-- Assignment Group Field -->
               <div>
                 <label
-                        for="incident-assignment-group"
                         class="flex items-center gap-2 text-slate-200 font-bold text-lg mb-3"
                 >
                   <svg
@@ -365,21 +364,11 @@
                   </svg>
                   Assignment Group <span class="text-red-400">*</span>
                 </label>
-                <select
-                        id="incident-assignment-group"
-                        name="assignment_group"
-                        required
-                        class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-pink-500 rounded-2xl px-6 py-4 text-white text-lg focus:outline-none focus:ring-4 focus:ring-pink-500/30 transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">Select assignment group</option>
-                  <option value="IT Support">🖥️ IT Support</option>
-                  <option value="Network Team">🌐 Network Team</option>
-                  <option value="Application Support">
-                    📱 Application Support
-                  </option>
-                  <option value="Security Team">🔒 Security Team</option>
-                  <option value="Database Team">🗄️ Database Team</option>
-                </select>
+                <input type="text"
+                       name="assignmentGroup"
+                       class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-cyan-500 rounded-2xl px-6 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-cyan-500/30 transition-all"
+                       placeholder="Leave blank for auto-assignment">
+<!
               </div>
               <!-- Assigned To Field -->
               <div>
@@ -405,7 +394,7 @@
                 <input
                         type="text"
                         id="incident-assigned-to"
-                        name="assigned_to"
+                        name="assignedTo"
                         class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-cyan-500 rounded-2xl px-6 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-cyan-500/30 transition-all"
                         placeholder="Leave blank for auto-assignment"
                 />
@@ -441,10 +430,10 @@
                         class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-orange-500 rounded-2xl px-6 py-4 text-white text-lg focus:outline-none focus:ring-4 focus:ring-orange-500/30 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Select priority</option>
-                  <option value="1 - Critical">🔴 1 - Critical</option>
-                  <option value="2 - High">🟠 2 - High</option>
-                  <option value="3 - Medium">🟡 3 - Medium</option>
-                  <option value="4 - Low">🟢 4 - Low</option>
+                  <option value="1">🔴 1 - Critical</option>
+                  <option value="2">🟠 2 - High</option>
+                  <option value="3">🟡 3 - Medium</option>
+                  <option value="4">🟢 4 - Low</option>
                 </select>
               </div>
               <!-- State Field -->
@@ -475,11 +464,12 @@
                         class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-green-500 rounded-2xl px-6 py-4 text-white text-lg focus:outline-none focus:ring-4 focus:ring-green-500/30 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Select state</option>
-                  <option value="New">🆕 New</option>
-                  <option value="In Progress">🔄 In Progress</option>
-                  <option value="On Hold">⏸️ On Hold</option>
-                  <option value="Resolved">✅ Resolved</option>
-                  <option value="Closed">🔒 Closed</option>
+                  <option value="NEW">🆕 New</option>
+                  <option value="IN_PROGRESS">🔄 In Progress</option>
+                  <option value="ON_HOLD">⏸️On Hold</option>
+                  <option value="RESOLVED">✅ Resolved</option>
+                  <option value="CANCELLED">✅ Cancelled</option>
+
                 </select>
               </div>
             </div>

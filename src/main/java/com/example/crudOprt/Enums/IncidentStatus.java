@@ -1,9 +1,9 @@
 package com.example.crudOprt.Enums;
 
 public enum IncidentStatus {
-
-OPEN,
-IN_PROGRESS,
+  NEW,
+ OH_HOLD,
+  IN_PROGRESS,
     RESOLVED,
     CANCELLED
 }
