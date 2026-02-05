@@ -27,7 +27,7 @@ public class UserServiceImpl {
             return ResponseEntity.badRequest().build();
         }
         projectUser.setPassword(passwordEncoder.encode(projectUser.getPassword()));
-        projectUser.setRole(Role.AGENT);
+        projectUser.setRole(projectUser.getRole());
 
         repository.save(projectUser);
         return ResponseEntity.status(HttpStatus.CREATED).build();
