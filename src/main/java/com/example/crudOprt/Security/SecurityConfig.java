@@ -1,5 +1,6 @@
 package com.example.crudOprt.Security;
 
+import com.example.crudOprt.Service.CustomLoginSuccessHandler;
 import com.example.crudOprt.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +18,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig  {
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomLoginSuccessHandler customLoginSuccessHandler;
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService){
+    public SecurityConfig(CustomUserDetailsService userDetailsService, CustomLoginSuccessHandler customLoginSuccessHandler){
         this.customUserDetailsService=userDetailsService;
-}
+        this.customLoginSuccessHandler = customLoginSuccessHandler;
+    }
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -54,7 +57,7 @@ public class SecurityConfig  {
                 .formLogin(form -> form
                         .loginPage("/agent/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/incident/create", true)
+                        .successHandler(customLoginSuccessHandler)
                         .permitAll()
                 );
 
