@@ -29,9 +29,18 @@ public class UserController {
 
     @PostMapping("/register")
     public String addUser(@ModelAttribute ProjectUser projectUser) {
-        System.out.println("CONTROLLER HIT 🔥");
         service.addUser(projectUser);
         return "redirect:/agent/login";
     }
+
+    @GetMapping("/Home/homePageAdmin")
+    public String adminHome(){
+        return "Home/homePageAdmin";
+    }
+    @GetMapping("/Home/homePageClient")
+    public String clientHome(){
+        return "Home/homePageClient";
+    }
+
 
 }
