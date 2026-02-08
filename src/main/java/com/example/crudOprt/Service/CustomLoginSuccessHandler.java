@@ -32,15 +32,11 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         for (GrantedAuthority a: authorities){
             roles.add(a.getAuthority());
         }
-        System.out.println(roles);
         if (roles.contains("ROLE_AGENT") || roles.contains("ROLE_ADMIN")){
-            System.out.println("Agent role is selected");
-            url="/agent/Home/homePageAdmin";
+            url="/home/admin";
         }else if (roles.contains("ROLE_CLIENT")){
-            System.out.println("Client role is selected");
-            url="/agent/Home/homePageClient";
+            url="/home/client";
         }
-        System.out.println(url);
         return url;
     }
 }
