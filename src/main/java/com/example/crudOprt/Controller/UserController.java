@@ -33,14 +33,6 @@ public class UserController {
         return "redirect:/agent/login";
     }
 
-    @GetMapping("/Home/homePageAdmin")
-    public String adminHome(){
-        return "Home/homePageAdmin";
-    }
-    @GetMapping("/Home/homePageClient")
-    public String clientHome(){
-        return "Home/homePageClient";
-    }
 
 
 }
