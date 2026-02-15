@@ -20,9 +20,9 @@ public class HomeController {
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
         String email=authentication.getName();
         long total=repository.countByCaller(email);
-        long inProgress=repository.countInProgress();
-        long resolved=repository.countResolved();
-        long open=repository.countOpen();
+        long inProgress=repository.countInProgress(email);
+        long resolved=repository.countResolved(email);
+        long open=repository.countOpen(email);
         model.addAttribute("inProgress", inProgress);
         model.addAttribute("open", open);
         model.addAttribute("resolved", resolved);
@@ -31,7 +31,25 @@ public class HomeController {
     }
 
     @GetMapping("/admin")
-    public String homePageAdmin(){
+    public String homePageAdmin(Model model){
+        long total= repository.count();
+        model.addAttribute("total", total);
+        long newCount=repository.countNew();
+        long inProgress=repository.countInProgress();
+        long pending=repository.countOnHold();
+        long resolved=repository.countResolved();
+        long critical=repository.countCritical();
+        long high=repository.countHigh();
+        long moderate=repository.countModerate();
+        long low=repository.countLow();
+        model.addAttribute("newCount", newCount);
+        model.addAttribute("inProgress", inProgress);
+        model.addAttribute("resolved", resolved);
+        model.addAttribute("pending", pending);
+        model.addAttribute("critical", critical);
+        model.addAttribute("high", high);
+        model.addAttribute("moderate",moderate);
+        model.addAttribute("low", low);;
         return "Home/homePageAdmin";
     }
 
