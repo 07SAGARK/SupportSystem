@@ -17,18 +17,13 @@ public class Incident {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String description;
     private String caller;
     private String assignmentGroup;
     private String assignedTo;
-
     @Enumerated(EnumType.STRING)
     private IncidentStatus state;
-
     private int priority;
-
     private String resolutionNote;
-
 
 }

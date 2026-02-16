@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/incident")
@@ -28,20 +31,27 @@ public class IncidentController {
          service.createIncident(incident);
          return "redirect:/home/client";
     }
+    @GetMapping("/view")
+    public String viewAll(Model model){
+        List<Incident> incidentList=service.getAll();
+        model.addAttribute("incident", incidentList);
+        return "Incident/viewAll";
 
-
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateIncident(@PathVariable long id,@RequestBody Incident incident){
-        if (incident.getState().equals(IncidentStatus.CANCELLED)){
-            return service.deleteIncident(id);
-        }
-        return service.updateIncident(id,incident);
     }
-    @GetMapping("/get")
-    public ResponseEntity<?> getIncident(){
-        return service.getIncident();
-    }
+
+
+
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<?> updateIncident(@PathVariable long id,@RequestBody Incident incident){
+//        if (incident.getState().equals(IncidentStatus.CANCELLED)){
+//            return service.deleteIncident(id);
+//        }
+//        return service.updateIncident(id,incident);
+//    }
+//    @GetMapping("/get")
+//    public ResponseEntity<?> getIncident(){
+//        return service.getIncident();
+//    }
 
 
 

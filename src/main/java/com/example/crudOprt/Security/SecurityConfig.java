@@ -37,7 +37,8 @@ public class SecurityConfig  {
 
                         .requestMatchers(HttpMethod.GET,
                                 "/agent/login",
-                                "/agent/register"
+                                "/agent/register",
+                                "/incident/view"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST,

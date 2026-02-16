@@ -21,12 +21,28 @@ public class IncidentServiceImpl {
         this.repository=repository;
     }
 
-    public ResponseEntity<?> createIncident(Incident incident){
+    public String createIncident(Incident incident){
         if (incident==null){
-            return ResponseEntity.badRequest().build();
+            return "No Proper Information is provided";
         }
         repository.save(incident);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return "Incident created Successfully";
+    }
+
+
+   public List<Incident> getAll(){
+        List<Incident> incidentList=repository.findAll();
+        return incidentList;
+   }
+    public String deleteIncident(Long id){
+        // If the status is CANCELLED the Incident will be deleted, the filter for this is applied in the Controller
+        Optional<Incident> incident=repository.findById(id);
+        if (incident.isEmpty()){
+            return "No Such Incident Found";
+        }
+        repository.deleteById(id);
+
+        return "Incident Deleted Successfully";
     }
 
     public ResponseEntity<?> updateIncident(long id, Incident incident){
@@ -43,23 +59,6 @@ public class IncidentServiceImpl {
         inc.setDescription(incident.getDescription());
         repository.save(inc);
         return ResponseEntity.ok("Incident Updated");
-    }
-    public ResponseEntity<?> getIncident(){
-        List<Incident> list=repository.findAll();
-        if (list.isEmpty()){
-            return ResponseEntity.badRequest().body("No Incident created");
-        }
-        return ResponseEntity.ok().body(list);
-    }
-    public ResponseEntity<?> deleteIncident(Long id){
-        // If the status is CANCELLED the Incident will be deleted, the filter for this is applied in the Controller
-        Optional<Incident> incident=repository.findById(id);
-        if (incident.isEmpty()){
-            return ResponseEntity.badRequest().body("No such Incident exist");
-        }
-        repository.deleteById(id);
-
-        return ResponseEntity.ok().build();
     }
 
 }

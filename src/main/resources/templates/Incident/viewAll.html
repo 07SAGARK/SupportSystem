@@ -288,7 +288,7 @@
             <th
                     class="px-6 py-4 text-center text-white font-bold text-sm uppercase tracking-wider"
             >
-              Update
+              Resolution Note
             </th>
             <th
                     class="px-6 py-4 text-center text-white font-bold text-sm uppercase tracking-wider"
@@ -299,6 +299,22 @@
           </thead>
           <tbody id="incidents-tbody">
           <!-- Incidents will be rendered here -->
+          <tr th:each="temp:${incident}">
+            <td th:text="${temp.id}"></td>
+            <td th:text="${temp.caller}"></td>
+            <td th:text="${temp.description}"></td>
+            <td th:text="${temp.assignmentGroup}"></td>
+            <td th:text="${temp.assignedTo}"></td>
+            <td th:text="${temp.priority}"></td>
+            <td th:text="${temp.state}"></td>
+            <td th:text="${temp.resolutionNote}"></td>
+            <td>
+              <a th:href="@{/incident/create(id=${temp.id})}"
+                 class="btn btn-info btn-sm">
+                Update
+              </a>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
