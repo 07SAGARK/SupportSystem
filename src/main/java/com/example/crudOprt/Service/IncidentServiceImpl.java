@@ -34,15 +34,10 @@ public class IncidentServiceImpl {
         List<Incident> incidentList=repository.findAll();
         return incidentList;
    }
-    public String deleteIncident(Long id){
+    public void deleteIncident(Long id){
         // If the status is CANCELLED the Incident will be deleted, the filter for this is applied in the Controller
         Optional<Incident> incident=repository.findById(id);
-        if (incident.isEmpty()){
-            return "No Such Incident Found";
-        }
         repository.deleteById(id);
-
-        return "Incident Deleted Successfully";
     }
 
     public ResponseEntity<?> updateIncident(long id, Incident incident){
