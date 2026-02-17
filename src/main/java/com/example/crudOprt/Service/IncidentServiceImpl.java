@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class IncidentServiceImpl {
@@ -40,6 +39,17 @@ public class IncidentServiceImpl {
         repository.deleteById(id);
     }
 
+    public List<Map<String, Object>> getTeamCount(){
+        List<Object[]> result=repository.countByTeam();
+        List<Map<String, Object>> response=new ArrayList<>();
+        for (Object[] row:result){
+            Map<String, Object> map=new HashMap<>();
+            map.put("team", row[0]);
+            map.put("count", row[1]);
+            response.add(map);
+        }
+        return response;
+    }
     public ResponseEntity<?> updateIncident(long id, Incident incident){
         // logic for updating the incident has been added
         Optional<Incident>  incdnt=repository.findById(id);

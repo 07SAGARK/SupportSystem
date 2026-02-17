@@ -2,6 +2,7 @@ package com.example.crudOprt.Controller;
 
 import com.example.crudOprt.Entity.Incident;
 import com.example.crudOprt.Enums.IncidentStatus;
+import com.example.crudOprt.Repository.IncidentRepository;
 import com.example.crudOprt.Service.IncidentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/incident")
 public class IncidentController {
     private IncidentServiceImpl service;
+
 
     @Autowired
     public IncidentController(IncidentServiceImpl service){
@@ -38,6 +41,7 @@ public class IncidentController {
         return "Incident/viewAll";
 
     }
+
 
 
 

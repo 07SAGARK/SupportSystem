@@ -37,8 +37,7 @@ public class SecurityConfig  {
 
                         .requestMatchers(HttpMethod.GET,
                                 "/agent/login",
-                                "/agent/register",
-                                "/incident/view"
+                                "/agent/register"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST,
@@ -48,10 +47,12 @@ public class SecurityConfig  {
 
                         .requestMatchers("/css/**", "/js/**").permitAll()
 
-                        .requestMatchers("/incident/create").hasAnyRole("CLIENT", "AGENT")
+                        .requestMatchers("/incident/create").hasRole("CLIENT")
+                        .requestMatchers("/incident/view").hasAnyRole("CLIENT","ADMIN", "AGENT")
+                        .requestMatchers("/incident/teamCount").hasAnyRole("ADMIN", "AGENT")
                         .requestMatchers("/get").hasAnyRole("ADMIN","AGENT")
                         .requestMatchers(HttpMethod.PUT,"/incident/update/**")
-                        .hasAnyRole("CLIENT", "ADMIN")
+                        .hasAnyRole("CLIENT", "ADMIN", "AGENT")
 
                         .anyRequest().authenticated()
                 )

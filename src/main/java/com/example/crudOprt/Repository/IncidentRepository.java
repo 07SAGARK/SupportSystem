@@ -5,10 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IncidentRepository extends JpaRepository<Incident, Long> {
     long countByCaller(String user);
 
+    @Query(value = "Select assignment_group, count(*) from incident group by assignment_group" , nativeQuery = true)
+    List<Object[]> countByTeam();
     long count();
     @Query(value = "Select count(*) from incident where state='IN_PROGRESS' and caller=:user ", nativeQuery = true)
     long countInProgress(String user);
