@@ -50,20 +50,33 @@ public class IncidentServiceImpl {
         }
         return response;
     }
-    public ResponseEntity<?> updateIncident(long id, Incident incident){
-        // logic for updating the incident has been added
-        Optional<Incident>  incdnt=repository.findById(id);
-        if (incdnt==null){
-            return ResponseEntity.badRequest().body("No Such Incident Exist");
+
+    public  Incident finById(long id){
+        Optional<Incident> incident=repository.findById(id);
+        Incident result=null;
+        if (incident.isPresent()){
+            result=incident.get();
+        }else {
+            throw new RuntimeException("No Incident found for the Id "+id);
         }
-        Incident inc=incdnt.get();
-        inc.setAssignedTo(incident.getAssignedTo());
-        inc.setState(incident.getState());
-        inc.setPriority(incident.getPriority());
-        inc.setAssignmentGroup(incident.getAssignmentGroup());
-        inc.setDescription(incident.getDescription());
-        repository.save(inc);
-        return ResponseEntity.ok("Incident Updated");
+        return result;
+
+
     }
+//    public ResponseEntity<?> updateIncident(long id, Incident incident){
+//        // logic for updating the incident has been added
+//        Optional<Incident>  incdnt=repository.findById(id);
+//        if (incdnt==null){
+//            return ResponseEntity.badRequest().body("No Such Incident Exist");
+//        }
+//        Incident inc=incdnt.get();
+//        inc.setAssignedTo(incident.getAssignedTo());
+//        inc.setState(incident.getState());
+//        inc.setPriority(incident.getPriority());
+//        inc.setAssignmentGroup(incident.getAssignmentGroup());
+//        inc.setDescription(incident.getDescription());
+//        repository.save(inc);
+//        return ResponseEntity.ok("Incident Updated");
+//    }
 
 }

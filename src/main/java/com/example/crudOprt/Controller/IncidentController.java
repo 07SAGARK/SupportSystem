@@ -42,6 +42,13 @@ public class IncidentController {
 
     }
 
+    @GetMapping("/update")
+    public String updateIncident(@RequestParam("id") long id, Model model){
+        Incident incident=service.finById(id);
+        model.addAttribute("incident", incident);
+        return "Incident/create";
+    }
+
 
 
 

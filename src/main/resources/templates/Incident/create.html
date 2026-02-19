@@ -1,101 +1,6 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en"  xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--  <meta charset="UTF-8">-->
-<!--  <title>Create Incident</title>-->
-<!--  <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            background-color: #f4f6f8;-->
-<!--        }-->
-<!--        .container {-->
-<!--            width: 500px;-->
-<!--            margin: 60px auto;-->
-<!--            padding: 25px;-->
-<!--            background: #ffffff;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 0 10px rgba(0,0,0,0.1);-->
-<!--        }-->
-<!--        h2 {-->
-<!--            text-align: center;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-<!--        label {-->
-<!--            font-weight: bold;-->
-<!--            display: block;-->
-<!--            margin-top: 12px;-->
-<!--        }-->
-<!--        input, textarea, select {-->
-<!--            width: 100%;-->
-<!--            padding: 10px;-->
-<!--            margin-top: 6px;-->
-<!--            border: 1px solid #ccc;-->
-<!--            border-radius: 4px;-->
-<!--        }-->
-<!--        textarea {-->
-<!--            resize: vertical;-->
-<!--        }-->
-<!--        button {-->
-<!--            margin-top: 20px;-->
-<!--            width: 100%;-->
-<!--            padding: 12px;-->
-<!--            background-color: #28a745;-->
-<!--            color: white;-->
-<!--            border: none;-->
-<!--            border-radius: 4px;-->
-<!--            font-size: 16px;-->
-<!--            cursor: pointer;-->
-<!--        }-->
-<!--        button:hover {-->
-<!--            background-color: #218838;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
 
-<!--<div class="container">-->
-<!--  <h2>Create Incident</h2>-->
-
-
-<!--  <form method="post" action="/incident/create">-->
-
-<!--    <label>Caller</label>-->
-<!--    <input type="text" name="caller" placeholder="Enter caller name" required>-->
-
-<!--    <label>Description</label>-->
-<!--    <textarea name="description" placeholder="Describe the issue" rows="4" required></textarea>-->
-
-<!--    <label>Assignment Group</label>-->
-<!--    <input type="text" name="assignmentGroup" placeholder="e.g. Windows Team">-->
-
-<!--    <label>Assigned To</label>-->
-<!--    <input type="text" name="assignedTo" placeholder="Agent name">-->
-
-<!--    <label>Priority</label>-->
-<!--    <select name="priority" required>-->
-<!--      <option value="">Select Priority</option>-->
-<!--      <option value="1">1 - Critical</option>-->
-<!--      <option value="2">2 - High</option>-->
-<!--      <option value="3">3 - Medium</option>-->
-<!--      <option value="4">4 - Low</option>-->
-<!--    </select>-->
-
-<!--    <label>State</label>-->
-<!--    <select name="state" required>-->
-<!--      <option value="OPEN">OPEN</option>-->
-<!--      <option value="IN_PROGRESS">IN_PROGRESS</option>-->
-<!--      <option value="RESOLVED">RESOLVED</option>-->
-<!--      <option value="CLOSED">CLOSED</option>-->
-<!--    </select>-->
-
-<!--    <button type="submit">Create Incident</button>-->
-<!--  </form>-->
-<!--</div>-->
-
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -280,7 +185,8 @@
           </div>
         </div>
         <!-- Incident Form -->
-        <form id="incident-form" method="post" action="/incident/create">
+        <form id="incident-form" method="post" action="/incident/create" th:object="${incident}">
+          <input type="hidden" th:field="*{id}">
           <div class="space-y-8">
             <!-- Caller Field -->
             <div>
@@ -310,6 +216,7 @@
                       required
                       class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-blue-500 rounded-2xl px-6 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/30 transition-all"
                       placeholder="Enter caller name or ID"
+                      th:field="*{caller}"
               />
             </div>
             <!-- Description Field -->
@@ -340,6 +247,7 @@
                       required
                       class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-purple-500 rounded-2xl px-6 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-purple-500/30 resize-none transition-all"
                       placeholder="Provide detailed information about the incident"
+                      th:field="*{description}"
               ></textarea>
             </div>
             <!-- Assignment Group and Assigned To Row -->
@@ -367,8 +275,10 @@
                 <input type="text"
                        name="assignmentGroup"
                        class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-cyan-500 rounded-2xl px-6 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-cyan-500/30 transition-all"
-                       placeholder="Leave blank for auto-assignment">
-<!
+                       placeholder="Leave blank for auto-assignment"
+                       th:field="*{assignmentGroup}"
+                >
+
               </div>
               <!-- Assigned To Field -->
               <div>
@@ -397,6 +307,7 @@
                         name="assignedTo"
                         class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-cyan-500 rounded-2xl px-6 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-cyan-500/30 transition-all"
                         placeholder="Leave blank for auto-assignment"
+                        th:field="*{assignedTo}"
                 />
               </div>
             </div>
@@ -427,6 +338,7 @@
                         id="incident-priority"
                         name="priority"
                         required
+                        th:field="*{priority}"
                         class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-orange-500 rounded-2xl px-6 py-4 text-white text-lg focus:outline-none focus:ring-4 focus:ring-orange-500/30 transition-all appearance-none cursor-pointer"
                 >
                   <option value="">Select priority</option>
@@ -461,8 +373,9 @@
                         id="incident-state"
                         name="state"
                         required
+                        th:field="*{state}"
                         class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-green-500 rounded-2xl px-6 py-4 text-white text-lg focus:outline-none focus:ring-4 focus:ring-green-500/30 transition-all appearance-none cursor-pointer"
-                >
+                 >
                   <option value="">Select state</option>
                   <option value="NEW">🆕 New</option>
                   <option value="IN_PROGRESS">🔄 In Progress</option>
