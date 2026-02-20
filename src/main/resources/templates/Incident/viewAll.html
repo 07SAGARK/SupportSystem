@@ -84,6 +84,9 @@
          tbody tr:hover {
          background-color: #1e293b;
          }
+         td{
+         color:white;
+         }
          .modal-backdrop {
          animation: backdropFade 0.3s ease;
          }
@@ -164,6 +167,25 @@
           </p>
         </div>
       </div>
+      <button
+              onclick="|window.location.href='@{home/admin}'|"
+              class="px-5 py-2.5 rounded-xl text-white font-semibold bg-slate-700 hover:bg-slate-600 border border-slate-600 flex items-center gap-2 transition-all"
+      >
+        <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+        >
+          <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
+        Dashboard
+      </button>
       <button
               onclick="handleLogout()"
               class="px-5 py-2.5 rounded-xl text-white font-semibold bg-slate-700 hover:bg-slate-600 border border-slate-600 flex items-center gap-2 transition-all"
