@@ -1,6 +1,7 @@
 package com.example.crudOprt.Controller;
 
 import com.example.crudOprt.Entity.ProjectUser;
+import com.example.crudOprt.Service.EmailService;
 import com.example.crudOprt.Service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     @Autowired
     private UserServiceImpl service;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -30,6 +33,7 @@ public class UserController {
     @PostMapping("/register")
     public String addUser(@ModelAttribute ProjectUser projectUser) {
         service.addUser(projectUser);
+        emailService.sendEmail(projectUser.getEmail(),"Account Creation", "Welcome to HelpDesk Pro Your account has been created successfully");
         return "redirect:/agent/login";
     }
 

@@ -1,6 +1,7 @@
 package com.example.crudOprt.Controller;
 
 import com.example.crudOprt.Repository.IncidentRepository;
+import com.example.crudOprt.Service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
