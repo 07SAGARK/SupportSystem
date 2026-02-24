@@ -12,5 +12,5 @@ import lombok.Setter;
 public class OtpRequestBody {
 
     private String email;
-    private String Otp;
+    private String otp;
 }
