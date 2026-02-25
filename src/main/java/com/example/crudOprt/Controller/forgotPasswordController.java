@@ -25,10 +25,11 @@ public class forgotPasswordController {
         return service.getEmail(request.getEmail());
     }
     @PostMapping("/send")
-    public ResponseEntity<?> sendOtp(@RequestParam("email") String email, HttpSession session){
-       String otp= resetService.sendOTP(email);
+    public ResponseEntity<?> sendOtp(@RequestBody EmailRequest request, HttpSession session){
+       String otp= resetService.sendOTP(request.getEmail());
+        System.out.println(otp);
        session.setAttribute("OTP",otp);
-       session.setAttribute("OTP_Email", email);
+       session.setAttribute("OTP_Email",request.getEmail());
        session.setAttribute("OTP_Time", System.currentTimeMillis());
 
        return ResponseEntity.ok().body("OTP Sent Successful");
@@ -62,10 +63,14 @@ public class forgotPasswordController {
     public ResponseEntity<?> resetPassword(@RequestBody LoginRequest request, HttpSession session){
         Boolean verified=(Boolean) session.getAttribute("OTP_Verified");
         String userEmail=(String) session.getAttribute("OTP_Email");
+        System.out.println(request.getUsername());
+        System.out.println(request.getPassword());
         if (verified==null || !verified){
+            System.out.println("OTP not verified");
             return ResponseEntity.badRequest().body("OTP Not Verified");
         }
         if ( userEmail==null || !userEmail.equals(request.getUsername())){
+            System.out.println("Invalid Email");
             return ResponseEntity.badRequest().body("Invalid Email");
         }
         service.updatePassword(userEmail,request.getPassword());

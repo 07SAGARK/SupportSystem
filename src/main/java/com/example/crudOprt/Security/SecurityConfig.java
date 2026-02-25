@@ -42,7 +42,7 @@ public class SecurityConfig  {
 
                         .requestMatchers(HttpMethod.POST,
                                 "/agent/register",
-                                "/login"
+                                "/login", "/forgot/email", "/forgot/send","/forgot/verify","/forgot/resetPassword"
                         ).permitAll()
 
                         .requestMatchers("/css/**", "/js/**").permitAll()
