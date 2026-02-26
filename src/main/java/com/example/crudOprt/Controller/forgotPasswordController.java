@@ -73,12 +73,12 @@ public class forgotPasswordController {
             System.out.println("Invalid Email");
             return ResponseEntity.badRequest().body("Invalid Email");
         }
-        service.updatePassword(userEmail,request.getPassword());
+
         session.removeAttribute("OTP");
         session.removeAttribute("OTP_Email");
         session.removeAttribute("OTP_Time");
         session.removeAttribute("OTP_Verified");
-        return ResponseEntity.ok().body("Password Updated Successfully");
+        return service.updatePassword(userEmail,request.getPassword());
     }
 
 

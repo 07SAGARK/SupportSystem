@@ -50,7 +50,9 @@ public class UserServiceImpl {
             return ResponseEntity.badRequest().body("Wrong Email ");
         }
         ProjectUser user1=user.get();
+        System.out.println(user1.toString());
         user1.setPassword(passwordEncoder.encode(password));
+        repository.save(user1);
         return ResponseEntity.ok().body("Password Updated Successfully");
     }
 
