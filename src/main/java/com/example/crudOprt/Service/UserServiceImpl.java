@@ -37,7 +37,7 @@ public class UserServiceImpl {
 
     public ResponseEntity<?> getEmail(String email){
         Optional<ProjectUser> user=repository.findByEmail(email);
-        if (user==null){
+        if (!user.isPresent()){
             return ResponseEntity.badRequest().body("No Email found!");
         }
         return ResponseEntity.ok().build();
@@ -50,7 +50,7 @@ public class UserServiceImpl {
             return ResponseEntity.badRequest().body("Wrong Email ");
         }
         ProjectUser user1=user.get();
-        System.out.println(user1.toString());
+
         user1.setPassword(passwordEncoder.encode(password));
         repository.save(user1);
         return ResponseEntity.ok().body("Password Updated Successfully");
