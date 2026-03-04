@@ -7,6 +7,8 @@ import com.example.crudOprt.Service.IncidentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,7 @@ public class IncidentController {
          service.createIncident(incident);
          return "redirect:/home/client";
     }
+
     @GetMapping("/view")
     public String viewAll(Model model){
         List<Incident> incidentList=service.getAll();
@@ -42,6 +45,13 @@ public class IncidentController {
 
     }
 
+//    @GetMapping("/viewByUser")
+//    public String viewByUser(){
+//        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+//        String email=authentication.getName();
+//        List<Object[]>
+//    }
+
     @GetMapping("/update")
     public String updateIncident(@RequestParam("id") long id, Model model){
         Incident incident=service.finById(id);
@@ -49,21 +59,10 @@ public class IncidentController {
         return "Incident/update";
     }
 
-
-
-
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<?> updateIncident(@PathVariable long id,@RequestBody Incident incident){
-//        if (incident.getState().equals(IncidentStatus.CANCELLED)){
-//            return service.deleteIncident(id);
-//        }
-//        return service.updateIncident(id,incident);
-//    }
-//    @GetMapping("/get")
-//    public ResponseEntity<?> getIncident(){
-//        return service.getIncident();
-//    }
-
+    @PostMapping("/update")
+    public String updateIncident(@ModelAttribute Incident incident){
+        return null;
+    }
 
 
 }

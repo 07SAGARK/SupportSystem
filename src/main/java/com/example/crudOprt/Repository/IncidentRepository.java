@@ -11,9 +11,16 @@ import java.util.List;
 public interface IncidentRepository extends JpaRepository<Incident, Long> {
     long countByCaller(String user);
 
+
     @Query(value = "Select assignment_group, count(*) from incident group by assignment_group" , nativeQuery = true)
     List<Object[]> countByTeam();
+
+    // fetch all by caller name
+    @Query(value = "Select * from incident where caller=:user", nativeQuery = true)
+    List<Object[]> findAllByCaller(String user);
+    // count all the incidents
     long count();
+
     @Query(value = "Select count(*) from incident where state='IN_PROGRESS' and caller=:user ", nativeQuery = true)
     long countInProgress(String user);
 
