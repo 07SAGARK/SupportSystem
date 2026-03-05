@@ -61,7 +61,8 @@ public class IncidentController {
 
     @PostMapping("/update")
     public String updateIncident(@ModelAttribute Incident incident){
-        return null;
+        service.updateIncident(incident);
+        return "redirect:/home/client";
     }
 
 

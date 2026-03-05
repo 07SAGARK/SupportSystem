@@ -60,8 +60,16 @@ public class IncidentServiceImpl {
             throw new RuntimeException("No Incident found for the Id "+id);
         }
         return result;
-
-
+    }
+    public  void updateIncident(Incident incident){
+        Incident incident1=repository.findById(incident.getId()).orElseThrow(()-> new RuntimeException("Incident Not Found"));
+         incident1.setDescription(incident.getDescription());
+         incident1.setAssignmentGroup(incident.getAssignmentGroup());
+         incident1.setState(incident.getState());
+         incident1.setAssignedTo(incident.getAssignedTo());
+         incident1.setPriority(incident.getPriority());
+         incident1.setResolutionNote(incident.getResolutionNote());
+         repository.save(incident1);
     }
 //    public ResponseEntity<?> updateIncident(long id, Incident incident){
 //        // logic for updating the incident has been added
