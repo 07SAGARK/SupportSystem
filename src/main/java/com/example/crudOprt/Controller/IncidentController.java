@@ -20,11 +20,13 @@ import java.util.Map;
 @RequestMapping("/incident")
 public class IncidentController {
     private IncidentServiceImpl service;
+    private IncidentRepository repository;
 
 
     @Autowired
-    public IncidentController(IncidentServiceImpl service){
+    public IncidentController(IncidentServiceImpl service, IncidentRepository repository){
         this.service=service;
+        this.repository=repository;
     }
 
     @GetMapping("/create")
@@ -41,6 +43,8 @@ public class IncidentController {
     public String viewAll(Model model){
         List<Incident> incidentList=service.getAll();
         model.addAttribute("incident", incidentList);
+        long total=repository.count();
+        model.addAttribute("total",total);
         return "Incident/viewAll";
 
     }

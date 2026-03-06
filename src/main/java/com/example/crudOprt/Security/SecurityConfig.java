@@ -50,9 +50,10 @@ public class SecurityConfig  {
                         .requestMatchers("/incident/create").hasRole("CLIENT")
                         .requestMatchers("/incident/view").hasAnyRole("CLIENT","ADMIN", "AGENT")
                         .requestMatchers("/incident/teamCount").hasAnyRole("ADMIN", "AGENT")
-                        .requestMatchers("/get").hasAnyRole("ADMIN","AGENT")
+                        .requestMatchers("/home/admin").hasAnyRole("ADMIN","AGENT")
                         .requestMatchers(HttpMethod.PUT,"/incident/update/**")
                         .hasAnyRole("CLIENT", "ADMIN", "AGENT")
+                        .requestMatchers("/home/client").hasRole("CLIENT")
 
                         .anyRequest().authenticated()
                 )
