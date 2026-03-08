@@ -33,11 +33,6 @@ public class IncidentServiceImpl {
         List<Incident> incidentList=repository.findAll();
         return incidentList;
    }
-    public void deleteIncident(Long id){
-        // If the status is CANCELLED the Incident will be deleted, the filter for this is applied in the Controller
-        Optional<Incident> incident=repository.findById(id);
-        repository.deleteById(id);
-    }
 
     public List<Map<String, Object>> getTeamCount(){
         List<Object[]> result=repository.countByTeam();
@@ -71,20 +66,9 @@ public class IncidentServiceImpl {
          incident1.setResolutionNote(incident.getResolutionNote());
          repository.save(incident1);
     }
-//    public ResponseEntity<?> updateIncident(long id, Incident incident){
-//        // logic for updating the incident has been added
-//        Optional<Incident>  incdnt=repository.findById(id);
-//        if (incdnt==null){
-//            return ResponseEntity.badRequest().body("No Such Incident Exist");
-//        }
-//        Incident inc=incdnt.get();
-//        inc.setAssignedTo(incident.getAssignedTo());
-//        inc.setState(incident.getState());
-//        inc.setPriority(incident.getPriority());
-//        inc.setAssignmentGroup(incident.getAssignmentGroup());
-//        inc.setDescription(incident.getDescription());
-//        repository.save(inc);
-//        return ResponseEntity.ok("Incident Updated");
-//    }
+    public List<Incident> findByUser(String user){
+        return repository.findAllByCaller(user);
+    }
+
 
 }

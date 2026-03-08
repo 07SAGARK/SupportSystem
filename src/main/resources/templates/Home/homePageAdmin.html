@@ -169,9 +169,9 @@
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold text-white">Recent Tickets</h3>
-                    </div><button onclick="setView('tickets')" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-2 transition-colors"> View All
+                    </div><a th:href="@{incident/view}" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-2 transition-colors"> View All
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg></button>
+                    </svg></a>
                 </div>
                 <div id="recent-tickets" class="divide-y divide-slate-700/50"><!-- Recent tickets will be rendered here -->
                 </div>

@@ -5,6 +5,7 @@ import com.example.crudOprt.Enums.IncidentStatus;
 import com.example.crudOprt.Repository.IncidentRepository;
 import com.example.crudOprt.Service.IncidentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.Authentication;
@@ -30,11 +31,12 @@ public class IncidentController {
     }
 
     @GetMapping("/create")
-    public String createIncident(){
+    public String createIncident(Model model){
+        model.addAttribute("incident", new Incident());
         return "Incident/create";
     }
     @PostMapping("/create")
-    public String createIncident(Incident incident){
+    public String createIncident(@ModelAttribute Incident incident){
          service.createIncident(incident);
          return "redirect:/home/client";
     }
@@ -46,15 +48,18 @@ public class IncidentController {
         long total=repository.count();
         model.addAttribute("total",total);
         return "Incident/viewAll";
-
     }
 
-//    @GetMapping("/viewByUser")
-//    public String viewByUser(){
-//        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-//        String email=authentication.getName();
-//        List<Object[]>
-//    }
+    @GetMapping("/viewByUser")
+    public String viewByUser(Model model){
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        String email=authentication.getName();
+        List<Incident> incidents=service.findByUser(email);
+        model.addAttribute("incident", incidents);
+        long total=repository.countByUser(email);
+        model.addAttribute("total", total);
+        return "Incident/viewAllByUser";
+    }
 
     @GetMapping("/update")
     public String updateIncident(@RequestParam("id") long id, Model model){

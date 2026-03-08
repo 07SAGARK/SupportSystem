@@ -17,7 +17,11 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
     // fetch all by caller name
     @Query(value = "Select * from incident where caller=:user", nativeQuery = true)
-    List<Object[]> findAllByCaller(String user);
+    List<Incident> findAllByCaller(String user);
+
+    // count incidents by email
+    @Query(value = "Select count(*) from incident where caller=:email",nativeQuery = true)
+    long countByUser(String email);
     // count all the incidents
     long count();
 
