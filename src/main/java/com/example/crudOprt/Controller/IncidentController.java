@@ -76,8 +76,6 @@ public class IncidentController {
     @GetMapping("/updateByUser")
     public String updateIncidentByUser(@RequestParam("id") long id, Model model){
         Incident incident=service.finById(id);
-        System.out.println("Inside update By User");
-
         model.addAttribute("incident", incident);
         return "Incident/updateByUser";
     }

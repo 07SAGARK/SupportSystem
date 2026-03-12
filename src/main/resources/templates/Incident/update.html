@@ -368,7 +368,7 @@
                                         name="state"
                                         required
                                         th:field="*{state}"
-                                        onchange="toggleResolution()"
+                                        onchange="toggleResolutionNote()"
                                         class="w-full bg-slate-800/80 backdrop-blur-xl border-2 border-slate-700 focus:border-green-500 rounded-2xl px-6 py-4 text-white text-lg focus:outline-none focus:ring-4 focus:ring-green-500/30 transition-all appearance-none cursor-pointer"
                                 >
                                     <option value="">Select state</option>
@@ -476,7 +476,7 @@
     </div>
 </div>
 <script>
-      function toggleResolution(){
+      function toggleResolutionNote(){
 
         const state=document.getElementById("incident-state").value;
         const resField=document.getElementById("resolution_note");
