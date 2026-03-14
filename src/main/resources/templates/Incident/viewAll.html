@@ -115,7 +115,11 @@ justify-content:space-between;
 margin-right:10px;
 }
 
-
+.disabled-link{
+pointer-events:none;
+opacity:0.5;
+cursor:not-allowed;
+}
 
       </style>
   <style>
@@ -363,6 +367,7 @@ margin-right:10px;
 
             <td class="px-6 py-4 text-center">
         <span class="px-3 py-1 rounded-lg bg-blue-500/20 text-blue-400 font-semibold"
+              id="state"
               th:text="${temp.state}">
         </span>
             </td>
@@ -373,11 +378,9 @@ margin-right:10px;
 
             <td class="px-6 py-4 text-center">
               <a th:href="@{/incident/update(id=${temp.id})}"
-                 class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white
-                bg-gradient-to-r from-emerald-500 to-cyan-500
-                rounded-lg shadow hover:scale-105 hover:shadow-lg
-                transition">
-
+                 th:attr="data-state=${temp.state}"
+                 onclick="return checkState(this)"
+                 class="px-4 py-2 bg-indigo-500 text-white rounded">
                 Update
               </a>
             </td>
@@ -389,5 +392,18 @@ margin-right:10px;
     </div>
   </div>
 </div>
+<script>
+function checkState(element){
+
+    const state = element.getAttribute("data-state");
+
+    if(state === "CANCELLED"){
+        alert("Cancelled incidents cannot be updated");
+        return false;
+    }
+
+    return true;
+}
+</script>
 </body>
 </html>

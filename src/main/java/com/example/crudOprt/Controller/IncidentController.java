@@ -64,6 +64,9 @@ public class IncidentController {
     @GetMapping("/update")
     public String updateIncident(@RequestParam("id") long id, Model model){
         Incident incident=service.finById(id);
+        if(incident.getState() == IncidentStatus.CANCELLED){
+            return "redirect:/incident/viewAll";
+        }
         model.addAttribute("incident", incident);
         return "Incident/update";
     }
