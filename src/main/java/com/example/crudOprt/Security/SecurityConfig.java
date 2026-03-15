@@ -64,6 +64,13 @@ public class SecurityConfig  {
                         .loginProcessingUrl("/login")
                         .successHandler(customLoginSuccessHandler)
                         .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/agent/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
                 );
 
         return http.build();

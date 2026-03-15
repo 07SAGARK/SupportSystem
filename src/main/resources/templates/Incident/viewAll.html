@@ -12,121 +12,120 @@
           rel="stylesheet"
   />
   <style>
-         body {
-         box-sizing: border-box;
-         }
-         * {
-         font-family: "Poppins", system-ui, -apple-system, sans-serif;
-         }
-         @keyframes fadeInUp {
-         from {
-         opacity: 0;
-         transform: translateY(20px);
-         }
-         to {
-         opacity: 1;
-         transform: translateY(0);
-         }
-         }
-         .animate-fade-in-up {
-         animation: fadeInUp 0.6s ease-out forwards;
-         }
-         @keyframes slideInDown {
-         from {
-         opacity: 0;
-         transform: translateY(-20px);
-         }
-         to {
-         opacity: 1;
-         transform: translateY(0);
-         }
-         }
-         .animate-slide-in-down {
-         animation: slideInDown 0.6s ease-out forwards;
-         }
-         @keyframes pulse {
-         0%,
-         100% {
-         opacity: 1;
-         }
-         50% {
-         opacity: 0.7;
-         }
-         }
-         .animate-pulse-slow {
-         animation: pulse 3s ease-in-out infinite;
-         }
-         .table-container {
-         overflow-x: auto;
-         }
-         .table-scroll::-webkit-scrollbar {
-         height: 8px;
-         }
-         .table-scroll::-webkit-scrollbar-track {
-         background: #1e293b;
-         border-radius: 10px;
-         }
-         .table-scroll::-webkit-scrollbar-thumb {
-         background: #10b981;
-         border-radius: 10px;
-         }
-         .table-scroll::-webkit-scrollbar-thumb:hover {
-         background: #059669;
-         }
-         table {
-         border-collapse: separate;
-         border-spacing: 0;
-         }
-         tbody tr {
-         transition: all 0.3s ease;
-         border-bottom: 1px solid #334155;
-         }
-         tbody tr:hover {
-         background-color: #1e293b;
-         }
-         td{
-         color:white;
-         }
-         .modal-backdrop {
-         animation: backdropFade 0.3s ease;
-         }
-         @keyframes backdropFade {
-         from {
-         opacity: 0;
-         }
-         to {
-         opacity: 1;
-         }
-         }
-         td {
-  white-space: nowrap;
-}
+      body {
+        box-sizing: border-box;
+      }
+      * {
+        font-family: "Poppins", system-ui, -apple-system, sans-serif;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+      @keyframes slideInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-slide-in-down {
+        animation: slideInDown 0.6s ease-out forwards;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+      .animate-pulse-slow {
+        animation: pulse 3s ease-in-out infinite;
+      }
+      .table-container {
+        overflow-x: auto;
+      }
+      .table-scroll::-webkit-scrollbar {
+        height: 8px;
+      }
+      .table-scroll::-webkit-scrollbar-track {
+        background: #1e293b;
+        border-radius: 10px;
+      }
+      .table-scroll::-webkit-scrollbar-thumb {
+        background: #10b981;
+        border-radius: 10px;
+      }
+      .table-scroll::-webkit-scrollbar-thumb:hover {
+        background: #059669;
+      }
+      table {
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #334155;
+      }
+      tbody tr:hover {
+        background-color: #1e293b;
+      }
+      td {
+        color: white;
+      }
+      .modal-backdrop {
+        animation: backdropFade 0.3s ease;
+      }
+      @keyframes backdropFade {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      td {
+        white-space: nowrap;
+      }
 
-td:nth-child(3),
-td:nth-child(8) {
-  white-space: normal;
-  max-width: 250px;
-}
-.main-div{
-display:flex;
-justify-content:space-between;
-}
-.first-div{
-margin-right:10px;
-}
+      td:nth-child(3),
+      td:nth-child(8) {
+        white-space: normal;
+        max-width: 250px;
+      }
+      .main-div {
+        display: flex;
+        justify-content: space-between;
+      }
+      .first-div {
+        margin-right: 10px;
+      }
 
-.disabled-link{
-pointer-events:none;
-opacity:0.5;
-cursor:not-allowed;
-}
-
-      </style>
+      .disabled-link {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    </style>
   <style>
-         @view-transition {
-         navigation: auto;
-         }
-      </style>
+      @view-transition {
+        navigation: auto;
+      }
+    </style>
 </head>
 <body
         class="h-full w-full overflow-auto"
@@ -134,12 +133,12 @@ cursor:not-allowed;
       margin: 0;
       padding: 0;
       background: linear-gradient(
-      135deg,
-      #020617 0%,
-      #0f172a 50%,
-      #1e293b 100%
+        135deg,
+        #020617 0%,
+        #0f172a 50%,
+        #1e293b 100%
       );
-      "
+    "
 >
 <!-- Decorative Background Elements -->
 <div class="fixed inset-0 overflow-hidden pointer-events-none">
@@ -180,45 +179,45 @@ cursor:not-allowed;
           </svg>
         </div>
         <div>
-                     <span
-                             id="company-name"
-                             class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent"
-                     >HelpDesk Pro</span
-                     >
+              <span
+                      id="company-name"
+                      class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent"
+              >HelpDesk Pro</span
+              >
           <p class="text-xs text-emerald-300/70 font-medium">
             Incidents Management
           </p>
         </div>
       </div>
       <div class="main-div">
-        <div class="first-div" >
-      <a
-              th:href="@{/home/admin}"
-              class="px-5 py-2.5 rounded-xl text-white font-semibold bg-slate-700 hover:bg-slate-600 border border-slate-600 flex items-center  transition-all"
-      >
-        Dashboard
-      </a>
+        <div class="first-div">
+          <a
+                  th:href="@{/home/admin}"
+                  class="px-5 py-2.5 rounded-xl text-white font-semibold bg-slate-700 hover:bg-slate-600 border border-slate-600 flex items-center transition-all"
+          >
+            Dashboard
+          </a>
         </div>
         <div>
-      <button
-              onclick="handleLogout()"
-              class="px-5 py-2.5 rounded-xl text-white font-semibold bg-slate-700 hover:bg-slate-600 border border-slate-600 flex items-center gap-2 transition-all"
-      >
-        <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewbox="0 0 24 24"
-        >
-          <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-          />
-        </svg>
-        Logout
-      </button>
+          <a
+                  th:href="@{/logout}"
+                  class="px-5 py-2.5 rounded-xl text-white font-semibold bg-slate-700 hover:bg-slate-600 border border-slate-600 flex items-center gap-2 transition-all"
+          >
+            <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewbox="0 0 24 24"
+            >
+              <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            Logout
+          </a>
         </div>
       </div>
     </div>
@@ -261,9 +260,11 @@ cursor:not-allowed;
         </div>
         <div class="text-right">
           <p class="text-slate-400 text-sm mb-2">Total Incidents</p>
-          <p id="total-count" class="text-5xl font-bold text-emerald-400" th:text="${total}">
-
-          </p>
+          <p
+                  id="total-count"
+                  class="text-5xl font-bold text-emerald-400"
+                  th:text="${total}"
+          ></p>
         </div>
       </div>
     </div>
@@ -336,55 +337,67 @@ cursor:not-allowed;
           </tr>
           </thead>
           <tbody id="incidents-tbody">
-          <tr th:each="temp : ${incident}"
-              class="border-b border-slate-700 hover:bg-slate-800/60 transition">
+          <tr
+                  th:each="temp : ${incident}"
+                  class="border-b border-slate-700 hover:bg-slate-800/60 transition"
+          >
+            <td
+                    class="px-6 py-4 text-emerald-400 font-semibold"
+                    th:text="${temp.id}"
+            ></td>
 
-            <td class="px-6 py-4 text-emerald-400 font-semibold"
-                th:text="${temp.id}">
-            </td>
+            <td
+                    class="px-6 py-4 text-slate-200"
+                    th:text="${temp.caller}"
+            ></td>
 
-            <td class="px-6 py-4 text-slate-200"
-                th:text="${temp.caller}">
-            </td>
+            <td
+                    class="px-6 py-4 text-slate-300 max-w-xs truncate"
+                    th:text="${temp.description}"
+            ></td>
 
-            <td class="px-6 py-4 text-slate-300 max-w-xs truncate"
-                th:text="${temp.description}">
-            </td>
+            <td
+                    class="px-6 py-4 text-cyan-300 font-medium"
+                    th:text="${temp.assignmentGroup}"
+            ></td>
 
-            <td class="px-6 py-4 text-cyan-300 font-medium"
-                th:text="${temp.assignmentGroup}">
-            </td>
+            <td
+                    class="px-6 py-4 text-slate-200"
+                    th:text="${temp.assignedTo}"
+            ></td>
 
-            <td class="px-6 py-4 text-slate-200"
-                th:text="${temp.assignedTo}">
+            <td class="px-6 py-4 text-center">
+                    <span
+                            class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-400 font-semibold"
+                            th:text="${temp.priority}"
+                    >
+                    </span>
             </td>
 
             <td class="px-6 py-4 text-center">
-        <span class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-400 font-semibold"
-              th:text="${temp.priority}">
-        </span>
+                    <span
+                            class="px-3 py-1 rounded-lg bg-blue-500/20 text-blue-400 font-semibold"
+                            id="state"
+                            th:text="${temp.state}"
+                    >
+                    </span>
             </td>
+
+            <td
+                    class="px-6 py-4 text-slate-300 max-w-xs truncate"
+                    th:text="${temp.resolutionNote}"
+            ></td>
 
             <td class="px-6 py-4 text-center">
-        <span class="px-3 py-1 rounded-lg bg-blue-500/20 text-blue-400 font-semibold"
-              id="state"
-              th:text="${temp.state}">
-        </span>
-            </td>
-
-            <td class="px-6 py-4 text-slate-300 max-w-xs truncate"
-                th:text="${temp.resolutionNote}">
-            </td>
-
-            <td class="px-6 py-4 text-center">
-              <a th:href="@{/incident/update(id=${temp.id})}"
-                 th:attr="data-state=${temp.state}"
-                 onclick="return checkState(this)"
-                 class="px-4 py-2 bg-indigo-500 text-white rounded">
+              <a
+                      th:href="@{/incident/update(id=${temp.id})}"
+                      th:attr="data-state=${temp.state}"
+                      onclick="return checkState(this)"
+                      class="px-4 py-2 bg-indigo-500 text-white rounded"
+              >
                 Update
               </a>
             </td>
-
           </tr>
           </tbody>
         </table>
@@ -393,17 +406,16 @@ cursor:not-allowed;
   </div>
 </div>
 <script>
-function checkState(element){
+      function checkState(element) {
+        const state = element.getAttribute("data-state");
 
-    const state = element.getAttribute("data-state");
+        if (state === "CANCELLED") {
+          alert("Cancelled incidents cannot be updated");
+          return false;
+        }
 
-    if(state === "CANCELLED"){
-        alert("Cancelled incidents cannot be updated");
-        return false;
-    }
-
-    return true;
-}
-</script>
+        return true;
+      }
+    </script>
 </body>
 </html>
